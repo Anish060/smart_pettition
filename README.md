@@ -1,54 +1,143 @@
-# SmartPetition - AI-Enhanced Government Petition System
+# SmartPetition - Government Petition Management System
 
-SmartPetition is a full-stack web application designed to simplify the management of public petitions by local or government authorities. It incorporates AI-based sentiment analysis using **Google Gemini API** to categorize and prioritize petitions based on urgency and emotional tone.
+SmartPetition is a full-stack web application that enables users to submit petitions to government bodies. It uses the **Google Gemini API** for sentiment analysis and helps admins categorize and prioritize the petitions based on urgency.
 
-## 🔍 Introduction
+---
 
-In a world where public feedback is vital for governance, SmartPetition helps bridge the gap between citizens and administrators. This platform allows users to submit their concerns and requests efficiently, while leveraging AI to assist authorities in managing petitions based on priority.
+## 🛠️ Tech Stack
 
-## 🛠 Tech Stack
-
-- **Frontend**: React, Tailwind CSS, React Router
-- **Backend**: Node.js, Express.js
+- **Frontend**: React (Vite), Tailwind CSS, React Router
+- **Backend**: Node.js + Express.js
 - **Database**: MySQL
-- **AI/ML**: Google Gemini API (Sentiment Analysis)
-- **Authentication**: JWT
-- **Hosting**: Vercel (Frontend), Heroku (Backend)
-- **Version Control**: GitHub
+- **AI**: Google Gemini API
+
+---
 
 ## 🚀 Features
 
-- 📝 Petition submission by users
-- 🤖 AI-powered categorization based on sentiment analysis
-- 🧠 Prioritization based on emotional intensity and relevance
-- 🔐 Role-based authentication for users and admins
-- 📊 Admin dashboard with response management
-- 🔄 Real-time status updates and notification system
+- User login and petition submission
+- Admin dashboard for reviewing, responding to petitions
+- Sentiment analysis using Gemini API
+- Petition categorization by sentiment score
+- Secure login for users and admins
 
-## 🧠 Google Technology Used
+---
 
-This project utilizes **Google Gemini API** to analyze the sentiment of each petition text. Based on the output score and emotion classification, petitions are sorted into urgency levels such as:
-- **Urgent**
-- **Critical**
-- **General**
+## ⚙️ How to Run the Project Locally
 
-This allows admins to focus on emotionally intense or highly significant issues first.
+### 1. Clone the Repository
 
-## 💻 Implementation
+```bash
+git clone https://github.com/anishprasath/SmartPetition.git
+cd SmartPetition
+```
 
-### 📁 GitHub Repository
-- [GitHub Repo](https://github.com/anishprasath/SmartPetition)
+### 2. Set Up the MySQL Database
 
-### 🧩 Sample Gemini Integration (Sentiment Analysis)
+- Create a MySQL database (e.g., `smartpetition`)
+- Import the schema from the provided SQL file (if any), or create the following tables manually:
+
+```sql
+CREATE DATABASE smartpetition;
+
+USE smartpetition;
+
+CREATE TABLE petitions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(255),
+  Context TEXT,
+  Issue TEXT,
+  emo_val FLOAT,
+  category VARCHAR(50)
+);
+```
+
+### 3. Backend Setup
+
+```bash
+cd backend
+npm install
+```
+
+- Create a `.env` file in the `backend` folder:
+
+```
+PORT=5000
+DB_HOST=localhost
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+DB_NAME=smartpetition
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+- Run the backend server:
+
+```bash
+npm start
+```
+
+---
+
+### 4. Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend should now be running at `http://localhost:5173`.
+
+---
+
+## 🔑 Important Notes
+
+- You must **set up your own MySQL database** before running the backend.
+- Get your **Google Gemini API key** from: [Google AI Studio](https://makersuite.google.com/app)
+- Replace placeholder keys and credentials in `.env` with your own.
+
+---
+
+## 🤖 Sentiment Analysis (Gemini API)
+
+We use Gemini to analyze petition text and prioritize them. Here's a simplified call from the backend:
 
 ```js
-import axios from 'axios';
+const res = await axios.post(
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + process.env.GEMINI_API_KEY,
+  { contents: [{ parts: [{ text: "Petition text here" }] }] }
+);
+```
 
-const analyzeSentiment = async (text) => {
-  const response = await axios.post('https://api.google.com/v1/gemini/sentiment', {
-    text: text,
-    apiKey: 'YOUR_API_KEY',
-  });
+---
 
-  return response.data;
-};
+## 📦 Folder Structure
+
+```
+SmartPetition/
+│
+├── backend/         # Node.js + Express backend
+├── frontend/        # React frontend
+└── README.md
+```
+
+---
+
+## ✅ Final Checklist
+
+- [ ] MySQL installed & running
+- [ ] Database `smartpetition` created
+- [ ] `.env` file configured correctly
+- [ ] Backend running on port 5000
+- [ ] Frontend running on port 5173
+- [ ] Gemini API key inserted
+
+---
+
+## 📜 License
+
+This project is for educational purposes under VIT Vellore’s EXC Community Project. Not licensed for commercial use.
+
+---
+
+Feel free to contribute or raise issues. Happy coding! 💻
